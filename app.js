@@ -1,13 +1,25 @@
 const express = require("express");
-const app = express();
 
 // allow us to use .env variables
 require('dotenv').config()
 
-// default index (/) function
-app.get("/", (req, res) => {
-  res.send("hello from node for hew ecommerce Ironhack final project with nodemon working");
-})
+// import mongoose 
+const mongoose = require('mongoose'); 
+
+// import routes
+const userRoutes = require('./routes/user');
+
+// app
+const app = express();
+
+// db
+mongoose.connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useCreateIndex: true
+}).then(() => console.log("DB Connected"));
+
+// routes middleware and /api prefix for user routes
+app.use("/api", userRoutes);
 
 // utilize local port defined in .env or || utilize 8000 if something happens to .env
 const port = process.env.PORT || 8000

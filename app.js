@@ -18,7 +18,8 @@ mongoose.connect(process.env.DATABASE, {
   useCreateIndex: true
 }).then(() => console.log("DB Connected"));
 
-// routes middleware and /api prefix for user routes
+// ROUTES MIDDLEWARE will all be registered here
+//// api prefix for user routes
 app.use("/api", userRoutes);
 
 // utilize local port defined in .env or || utilize 8000 if something happens to .env

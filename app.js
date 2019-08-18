@@ -1,4 +1,7 @@
 const express = require("express");
+const morgan = require('morgan');
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 // allow us to use .env variables
 require('dotenv').config()
@@ -17,6 +20,11 @@ mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useCreateIndex: true
 }).then(() => console.log("DB Connected"));
+
+// middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // ROUTES MIDDLEWARE will all be registered here
 //// api prefix for user routes

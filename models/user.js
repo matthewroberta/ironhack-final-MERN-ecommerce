@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 // hash password
-const crypto = require('crypto')
+const crypto = require("crypto");
 
 // unix strings
-const uuidv1 = require('uuid/v1')
+const uuidv1 = require("uuid/v1");
 
 // new userSchema
 const userSchema = new mongoose.Schema(
@@ -43,31 +43,31 @@ const userSchema = new mongoose.Schema(
 );
 
 // virtual field - send pw from client side encrypted
-userSchema.virtual('password')
-
-.set(function(password) {
-  this._password = password
-  this.salt = uuidv1()
-  this.hashed_password = this.encryptPassword(password)
-})
-
-.get(function() {
-  return this._password
-})
+userSchema
+  .virtual("password")
+  .set(function(password) {
+    this._password = password;
+    this.salt = uuidv1();
+    this.hashed_password = this.encryptPassword(password);
+  })
+  .get(function() {
+    return this._password;
+  });
 
 // create method to add to user schema and hex pw
 userSchema.methods = {
   encryptPassword: function(password) {
-    if(!password) return '';
+    if (!password) return "";
     try {
-      return crypto.createHmac('sha1', this.salt)
-                      .update(password)
-                      .digest('hex')
+        return crypto
+            .createHmac("sha1", this.salt)
+            .update(password)
+            .digest("hex");
     } catch (err) {
-      return ''
+        return "";
     }
   }
-}
+};
 
 // create User model we can use anywhere later in our controller to create new users, update users, etc...
 module.exports = mongoose.model("User", userSchema);

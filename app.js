@@ -1,28 +1,29 @@
 const express = require("express");
-const morgan = require('morgan');
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
+const mongoose = require('mongoose'); 
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // allow us to use .env variables
-require('dotenv').config()
-
-// import mongoose 
-const mongoose = require('mongoose'); 
+require("dotenv").config();
 
 // import routes
-const userRoutes = require('./routes/user');
+const userRoutes = require("./routes/user");
 
 // app
 const app = express();
 
 // db
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useCreateIndex: true
-}).then(() => console.log("DB Connected"));
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  })
+  .then(() => console.log("DB Connected"))
+  .catch( err => console.log('err'))
 
 // middlewares
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 

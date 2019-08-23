@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const {errorHandler} = require('../helpers/dbErrorHandler')
 
 // export method from controller to use in routes
 exports.signup = (req, res) => {
@@ -8,9 +9,12 @@ exports.signup = (req, res) => {
   user.save((err, user) => {
       if (err) {
           return res.status(400).json({
-              err
+              err: errorHandler(err)
           });
       }
+      // these user.__ = undefined will prevent these things froom passing into saved user
+      user.salt = undefined;
+      user.hashed_password = undefined;
       res.json({
           user
       });
